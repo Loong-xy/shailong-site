@@ -309,3 +309,33 @@ a { color: inherit; }
   html { scroll-behavior: auto; }
   * { transition: none !important; animation: none !important; }
 }
+
+/* ===== Motion: page snapping + reveal on arrival ===== */
+html { scroll-snap-type: y proximity; }
+.hero, .section, .ask, .contact { scroll-snap-align: start; }
+.hero-title .line { display: block; }
+
+.js .rise {
+  opacity: 0; translate: 0 56px;
+  transition: opacity .9s cubic-bezier(.2,.7,.2,1), translate .9s cubic-bezier(.2,.7,.2,1);
+  transition-delay: var(--d, 0ms);
+}
+.js .pop {
+  opacity: 0; scale: .55; translate: 0 30px;
+  transition: opacity .5s ease, scale .75s cubic-bezier(.34,1.56,.64,1), translate .75s cubic-bezier(.34,1.56,.64,1);
+  transition-delay: var(--d, 0ms);
+}
+.js .rise.in, .js .pop.in { opacity: 1; translate: 0 0; scale: 1; }
+
+/* lime highlighter draws itself in */
+.js .hl::before { scale: 0 1; transform-origin: left center; transition: scale .7s cubic-bezier(.65,0,.35,1); transition-delay: calc(var(--d, 0ms) + 450ms); }
+.js .in .hl::before, .js .hl.in::before { scale: 1 1; }
+
+/* the feature badge spins in after its card */
+.js .feature .feature-badge { scale: 0; transition: scale .7s cubic-bezier(.34,1.56,.64,1) .7s; }
+.js .feature.in .feature-badge { scale: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-snap-type: none; }
+  .js .rise, .js .pop, .js .hl::before, .js .feature .feature-badge { opacity: 1 !important; translate: none !important; scale: 1 !important; }
+}

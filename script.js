@@ -58,3 +58,16 @@ form.addEventListener('submit', (e) => {
 document.querySelectorAll('#ask-chips button').forEach((btn) => {
   btn.addEventListener('click', () => ask(btn.textContent));
 });
+
+// Reveal elements as their section scrolls into view
+const animated = document.querySelectorAll('.rise, .pop');
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+  animated.forEach((el) => io.observe(el));
+} else {
+  animated.forEach((el) => el.classList.add('in'));
+}
